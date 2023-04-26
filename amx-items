@@ -1,0 +1,25 @@
+
+;; ----- amx-history -----
+(
+ server-edit-abort
+ debug-on-entry
+ debug-on-variable-change
+ debug
+ package-list-packages
+ lsp-ui-mode
+ lsp-workspace-restart
+)
+
+;; ----- amx-data -----
+(
+ (minibuffer-scroll-up-command . 1)
+ (info-emacs-manual . 1)
+ (server-mode . 1)
+ (lsp-workspace-restart . 1)
+ (lsp-ui-mode . 1)
+ (package-list-packages . 1)
+ (debug . 1)
+ (debug-on-variable-change . 1)
+ (debug-on-entry . 1)
+ (server-edit-abort . 1)
+)

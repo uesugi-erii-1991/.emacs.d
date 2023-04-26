@@ -1,0 +1,98 @@
+;; (use-package eldoc-overlay
+;;   :ensure t
+;;   :init(eldoc-overlay-mode 1))
+  ;; :delight eldoc-overlay-mode
+  ;; :custom ((eldoc-overlay-backend 'inline-docs)
+  ;;          ;; (eldoc-overlay-delay 3)
+  ;;          )
+  ;; :custom-face (inline-docs-border-face ((t (:family "DejaVu Sans Mono"))))
+  ;; :hook (eldoc-mode . eldoc-overlay-mode))
+;;csharp 插件设置
+(use-package csharp-mode
+  :ensure t
+  :mode "\\.cs\\'"
+  :interpreter "csharp"
+  )
+
+;;给server-mode配置快捷键
+(global-set-key (kbd "C-c u") 'server-mode)
+;;lsp语言引擎
+;;----
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; (lsp-ui-mode -1)
+  (setq lsp-lens-enable t
+	lsp-lens-place-position 'top-left-corner
+	)
+  ;;延时加载:仅当(lsp)函数被调用时(require)
+  ;;在哪些语言启动lsp
+  :hook (
+ 	 ((csharp-mode
+	   ) . lsp-deferred))
+  
+  :commands (lsp lsp-deferred )
+  ;;在(require)执行前
+  :config
+  (add-hook 'before-save-hook 'lsp-format-buffer)
+  (setq lsp-auto-configure t;;尝试自动加载
+	;;	lsp-auto-guess-root t;;尝试自动猜测项目根目录
+	lsp-idle-delay 0.500 ;;多长时间lsp向服务器刷新信息
+	lsp-enable-snippet t;;使用lsp提供的代码片段
+;;	lsp-prefer-flymale nil ;;不使用flymake
+	lsp-diagnostics-provider :flycheck
+	 
+	;; company-minimum-prefix-length 1
+	company-idle-delay 0.0
+	lsp-log-io nil
+	;; lsp-headerline-arrow "/"
+	)
+  ;; (add-hook 'minibuffer-setup-hook (lambda () (lsp-ui-doc--hide-frame)))
+  (add-hook 'lsp-mode-hook
+	    (lambda()
+	      (define-key evil-normal-state-local-map
+		(kbd "gD") 'lsp-find-references)))
+  
+  )
+ 
+;;-----
+(use-package lsp-ui
+  :ensure t
+  :after (lsp-mode)
+  :commands (lsp-ui-mode)
+  :bind
+  (:map lsp-ui-mode-map
+        ;; ([remap xref-find-references] . lsp-ui-peek-find-references)
+        ;; ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+        ("C-c u" . lsp-ui-imenu))
+  :hook (lsp-mode . lsp-ui-mode)
+  :init
+  ;; WORKAROUND
+  ;; See: https://github.com/syl20bnr/spacemacs/issues/13355
+  (setq ;;lsp-ui-doc--buffer-prefix " *lsp-ui-doc-"
+   ;; https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/how-to-turn-(or )ff.md
+   lsp-ui-doc-enable nil
+   lsp-ui-doc-position 'top
+   lsp-ui-doc-alignment 'frame
+   lsp-ui-doc-show-with-cursor t
+   lsp-ui-doc-text-scale-level -3
+   lsp-ui-doc-winum-ignore t
+   
+   lsp-ui-peek-always-show t
+   ;;	
+   lsp-ui-sideline-enable nil
+   lsp-ui-sideline-show-code-actions nil
+   )
+  :config
+  (setq scroll-margin 0)
+  (delight 'lsp-lens-mode nil 'lsp-lens)
+  (define-key lsp-ui-mode-map [remap lsp--find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap lsp-find-references] #'lsp-ui-peek-find-references)
+  )
+ 
+(use-package lsp-treemacs
+  :ensure t
+  :commands lsp-treemacs-errors-list)
+
+
+(provide 'init-lsp-lang)

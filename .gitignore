@@ -1,0 +1,9 @@
+/auto-save-list
+/elpa
+/server
+**.~undo-tree~
+.lsp-session**
+*.eld
+recentf
+anx-items
+custom.el
