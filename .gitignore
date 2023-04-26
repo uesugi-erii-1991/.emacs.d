@@ -10,3 +10,7 @@ custom.el
 amx-items
 ido.last
 amx-items
+*.7z
+/pyim
+
+
