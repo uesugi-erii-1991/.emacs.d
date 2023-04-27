@@ -125,22 +125,3 @@
           (lambda ()
             (when server-process
               (setq server-process-filter 'my-server-process-filter))))
-
-;; Get the command line arguments
-(setq args command-line-args)
-
-;; Check if there are at least two arguments
-(when (>= (length args) 2)
-  ;; Get the second argument
-  (setq file (nth 1 args))
-  ;; Open the file
-  (find-file file))
-(add-hook 'server-visit-hook
-          (lambda ()
-            (message "文件")))
-
-
-;; (defun my-server-visit-hook (file created arg1)
-  ;; (message "Visited file %s (created: %s, arg1: %s)" file created arg1))
-
-;; (add-hook 'server-visit-hook 'my-server-visit-hook)
