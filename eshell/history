@@ -1,0 +1,9 @@
+vim.bat 
+dotnet.exe 
+dotnet --v
+dotnet -v
+dotnet --version
+HelpPane.exe 
+help.exe 
+version.dll 
+echo $TERM 
